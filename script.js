@@ -1,4 +1,3 @@
-
 // 1) Objeto do usuário
 const usuario = {
   nome: "Raquel",       // pode trocar
@@ -15,26 +14,27 @@ const transacoes = [
 const elNomeUsuario = document.getElementById("nome-usuario");
 const elSaldo = document.getElementById("saldo");
 const elListaTransacoes = document.getElementById("lista-transacoes");
+const elFiltroTipo = document.getElementById("filtro-tipo");
+
 
 
 // 4) Função para formatar valor em BRL (R$)
 function formatarMoeda(valor) {
   return valor.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
-function renderizarExtrato() {
+function renderizarExtrato(lista = transacoes) {
   elListaTransacoes.innerHTML = ""; // limpa antes de desenhar
 
-  // Se não tiver transações, mostra uma mensagem na tabela
-  if (transacoes.length === 0) {
+  if (lista.length === 0) {
     const tr = document.createElement("tr");
     tr.innerHTML = `<td colspan="3" style="text-align:center; opacity:0.7;">Sem transações ainda</td>`;
     elListaTransacoes.appendChild(tr);
     return;
   }
 
-  for (const t of transacoes) {
+  for (const t of lista) {
     const tr = document.createElement("tr");
-    tr.classList.add(t.tipo); // "entrada" ou "saida"
+    tr.classList.add(t.tipo);
 
     const tdData = document.createElement("td");
     tdData.textContent = t.data;
@@ -52,13 +52,27 @@ function renderizarExtrato() {
 
     elListaTransacoes.appendChild(tr);
   }
+} // ✅ FECHOU renderizarExtrato AQUI
+
+// ✅ Agora sim: Filtra o extrato conforme o select (Todos | Entradas | Saídas)
+
+function filtrarExtrato() {
+  const tipo = elFiltroTipo.value; // "todos" | "entrada" | "saida"
+
+  if (tipo === "todos") {
+    renderizarExtrato(transacoes);
+    return;
+  }
+
+  const filtradas = transacoes.filter(t => t.tipo === tipo);
+  renderizarExtrato(filtradas);
 }
 
 // 5) Mostrar nome e saldo inicial na tela quando carregar, aqui eu mudo se precisar colocar saldo baixo pisca, alertas
 function iniciarApp() {
   elNomeUsuario.textContent = usuario.nome;
   atualizarSaldo();   // 👈 quem deve mostrar o saldo
-  renderizarExtrato();
+  filtrarExtrato();
 }
 
 // roda assim que o JS carregar
@@ -130,7 +144,7 @@ function novaTransacao(tipo) {
     });
 
     atualizarSaldo();
-    renderizarExtrato();
+    filtrarExtrato();
 
   } catch (erro) {
 
@@ -138,4 +152,3 @@ function novaTransacao(tipo) {
 
   }
 }
-
