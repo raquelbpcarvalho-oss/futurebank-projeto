@@ -1,0 +1,104 @@
+<!DOCTYPE html> 
+<html lang="pt-br"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>FutureBank - Seu Banco Digital</title> 
+    <style> 
+        :root { --primary: #6c5ce7; --bg: #dfe6e9; --text: #2d3436; } 
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); 
+display: flex; justify-content: center; padding: 20px; } 
+        .app-container { width: 100%; max-width: 800px; background: white; border-radius: 15px; 
+box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; } 
+         
+        /* Header */ 
+        header { background-color: var(--primary); color: white; padding: 20px; display: flex; 
+justify-content: space-between; align-items: center; } 
+        .saldo-box { text-align: right; } 
+        /* Estilo do valor do saldo (tamanho e destaque visual) */
+        .saldo-valor {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+/* Transição suave quando a cor do saldo muda via JavaScript */
+        #saldo{
+            transition: color 0.3s ease;
+        }
+
+        /* Actions */ 
+        .actions { padding: 20px; display: flex; gap: 10px; border-bottom: 1px solid #eee; } 
+        button { flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: 
+pointer; transition: 0.2s; color: white; } 
+        .btn-deposit { background-color: #00b894; } 
+        .btn-pay { background-color: #d63031; } 
+        button:hover { opacity: 0.9; transform: translateY(-2px); } 
+ 
+        /* Extract Area */ 
+        .extract { padding: 20px; } 
+        .extract-header { display: flex; justify-content: space-between; align-items: center; 
+margin-bottom: 15px; } 
+         
+        table { width: 100%; border-collapse: collapse; } 
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; } 
+        th { color: #636e72; font-size: 0.9rem; } 
+         
+        .entrada { color: #86EFAC; font-weight: bold; } 
+        .saida { color: #EF4444; font-weight: bold; } 
+    </style> 
+</head> 
+<body> 
+ 
+    <div class="app-container"> 
+        <header> 
+            <div> 
+                <small>Olá,</small> 
+                <h2 id="nome-usuario">Carregando...</h2> 
+            </div> 
+            <div class="saldo-box"> 
+                <small>Saldo Atual</small> 
+                <div class="saldo-valor">R$ <span id="saldo">0,00</span></div> 
+            </div> 
+        </header> 
+ 
+        <section class="actions"> 
+            <button class="btn-deposit" onclick="novaTransacao('deposito')">
+💰
+ 
+Depositar</button> 
+            <button class="btn-pay" onclick="novaTransacao('pagamento')">
+💸
+ Pagar 
+Boleto</button> 
+        </section> 
+ 
+        <section class="extract"> 
+            <div class="extract-header"> 
+                <h3>Extrato Recente</h3> 
+                <!-- Desafio: Fazer estes filtros funcionarem --> 
+                <select id="filtro-tipo" onchange="filtrarExtrato()"> 
+                    <option value="todos">Todos</option> 
+                    <option value="entrada">Entradas</option> 
+                    <option value="saida">Saídas</option> 
+                </select> 
+            </div> 
+ 
+            <table> 
+                <thead> 
+                    <tr> 
+                        <th>Data</th> 
+                        <th>Descrição</th> 
+                        <th>Valor</th> 
+                    </tr> 
+                </thead> 
+                <tbody id="lista-transacoes"> 
+                    <!-- As linhas serão inseridas aqui via JS --> 
+                </tbody> 
+            </table> 
+        </section> 
+    </div> 
+ 
+    <script src="script.js"></script> 
+</body> 
+</html>
